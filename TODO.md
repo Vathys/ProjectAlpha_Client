@@ -13,6 +13,14 @@
     b. Open file command
     c. Protocol must tell server what changes are happening, where those changes are occuring, and in which file those changes atre occurring. 
     
+    Ideas for protocol
+      {(+)"\n\n//This is a comment"(line, 7)(fileName, Main.java)}
+      (+) OR (-) -> addition OR deletion to the file
+      "" -> what message is being added or deleted
+      (line, ...) -> where the edit has started
+      (fileName, ...) -> which file the edit is occuring
+      (character, ...) -> this the character after which the edit occurs
+    
  
  Processes in Editor:
   1. Send changes in the document to the client every 15 seconds (Seconds may vary)
