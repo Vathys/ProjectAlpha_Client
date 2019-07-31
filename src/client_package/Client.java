@@ -16,7 +16,6 @@ public class Client extends Thread
      private Socket clientSocket;
      private String serverName;
      private int port;
-     private int count = 0;
      
      public Client(String serverName, int port)
      {
@@ -56,17 +55,9 @@ public class Client extends Thread
                          temp = (char) cin.read();
                          msg += temp;
                     }
-                    if(msg.isEmpty())
-                    {
-                         count++;
-                    }
                     if(!msg.isEmpty())
                     {
                          System.out.println(msg);
-                         stop = true;
-                    }
-                    if(count >= 1000)
-                    {
                          stop = true;
                     }
                }
