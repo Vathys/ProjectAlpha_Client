@@ -1,5 +1,6 @@
 package client_package;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -16,8 +17,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentEvent.ElementChange;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;
+import javax.swing.text.Element;
 
 @SuppressWarnings("serial")
 public class Editor extends JFrame implements ActionListener {
@@ -27,7 +32,8 @@ public class Editor extends JFrame implements ActionListener {
 	    JFrame f; 
 	  
 	    // Constructor 
-	    Editor() 
+	    @SuppressWarnings("deprecation")
+		Editor() 
 	    { 
 	        // Create a frame 
 	        f = new JFrame("editor"); 
@@ -44,7 +50,7 @@ public class Editor extends JFrame implements ActionListener {
 	  
 	        // Text component 
 	        t = new JTextArea(); 
-	  
+	        t.getDocument().addDocumentListener(new MyDocumentListener());
 	        // Create a menubar 
 	        JMenuBar mb = new JMenuBar(); 
 	  
@@ -202,6 +208,8 @@ public class Editor extends JFrame implements ActionListener {
 		        else if (s.equals("close")) { 
 		            f.setVisible(false); 
 		        } 
-		    } 
+		    }
+
+	
 		
 }
