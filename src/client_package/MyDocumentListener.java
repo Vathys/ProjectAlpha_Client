@@ -1,4 +1,4 @@
-package client_package;
+
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -41,8 +41,14 @@ public class MyDocumentListener implements DocumentListener{
 	    {
 		if(action.equals("insert"))
 		{
+		
 		System.out.println("Offset: " + e.getOffset());
-		System.out.println("Change: " + addedLines.toString());
+		
+		if(e.getChange(addedLines[0]) != null)
+		{
+		System.out.println("Change: " + e.getChange(addedLines[0]));
+		}
+		
 		}
 		else
 		{
