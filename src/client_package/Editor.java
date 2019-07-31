@@ -1,43 +1,44 @@
 package client_package;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentEvent.ElementChange;
-import javax.swing.event.DocumentListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;
-import javax.swing.text.Element;
 
-@SuppressWarnings("serial")
-public class Editor extends JFrame implements ActionListener
+public class Editor
 {
-     JTextArea t;
-
-     // Frame 
-     JFrame f;
-
+     /* Current protocol
+      * 
+      * {EventType Offset Length StringValue}
+      * 
+      * EventType -> [+ (EventType.INSERT) OR - (EventType.REMOVE)]
+      * Offset -> [off, #]
+      * Length -> [len, #]
+      * StringValue -> "val"
+      * 
+      * Example:
+      * 
+      * {[+][off12][len1]"d"}
+      **/
+     
+     private JFrame frame;
+     private JTextArea textArea;
+     
+     private CustomListener lis;
+     
      // Constructor 
-     @SuppressWarnings("deprecation")
-     public Editor()
+     public Editor(Client c)
      {
-          super("Editor");
-
-          try
+          super();
+          /*try
           {
                // Set metl look and feel 
                UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -46,12 +47,24 @@ public class Editor extends JFrame implements ActionListener
                MetalLookAndFeel.setCurrentTheme(new OceanTheme());
           } catch (Exception e)
           {
-          }
+               e.printStackTrace();
+          }*/
 
+          lis = new CustomListener(c, this);
+          
+          //Frame
+          frame = new JFrame("Editor");
+          
           // Text component 
-          t = new JTextArea();
-          t.getDocument().addDocumentListener(new MyDocumentListener());
+          textArea = new JTextArea();
+          textArea.getDocument().addDocumentListener(lis);
 
+          //REDO MENU BAR
+          //Especially New, Open, Save
+          //Function of New, Open, Save will depend on where
+          //Document will be saved...
+          //either in the server or one of the clients...
+          
           // Create a menubar 
           JMenuBar mb = new JMenuBar();
 
@@ -65,10 +78,10 @@ public class Editor extends JFrame implements ActionListener
           JMenuItem mi9 = new JMenuItem("Print");
 
           // Add action listener 
-          mi1.addActionListener(this);
-          mi2.addActionListener(this);
-          mi3.addActionListener(this);
-          mi9.addActionListener(this);
+          mi1.addActionListener(lis);
+          mi2.addActionListener(lis);
+          mi3.addActionListener(lis);
+          mi9.addActionListener(lis);
 
           m1.add(mi1);
           m1.add(mi2);
@@ -79,143 +92,63 @@ public class Editor extends JFrame implements ActionListener
           JMenu m2 = new JMenu("Edit");
 
           // Create menu items 
-          JMenuItem mi4 = new JMenuItem("cut");
-          JMenuItem mi5 = new JMenuItem("copy");
-          JMenuItem mi6 = new JMenuItem("paste");
+          JMenuItem mi4 = new JMenuItem("Cut");
+          JMenuItem mi5 = new JMenuItem("Copy");
+          JMenuItem mi6 = new JMenuItem("Paste");
 
           // Add action listener 
-          mi4.addActionListener(this);
-          mi5.addActionListener(this);
-          mi6.addActionListener(this);
+          mi4.addActionListener(lis);
+          mi5.addActionListener(lis);
+          mi6.addActionListener(lis);
 
           m2.add(mi4);
           m2.add(mi5);
           m2.add(mi6);
 
-          JMenuItem mc = new JMenuItem("close");
+          JMenuItem mc = new JMenuItem("Close");
 
-          mc.addActionListener(this);
+          mc.addActionListener(lis);
 
           mb.add(m1);
           mb.add(m2);
           mb.add(mc);
 
-          setJMenuBar(mb);
-          add(t);
-          setSize(500, 500);
-          setDefaultCloseOperation(EXIT_ON_CLOSE);
-          setVisible(true);
+          frame.setJMenuBar(mb);
+          frame.add(textArea);
+          frame.setSize(500, 500);
+          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+          frame.setVisible(true);
+     }
+     
+     /**
+      * @return the frame
+      */
+     public JFrame getFrame()
+     {
+          return frame;
      }
 
-     @Override
-     public void actionPerformed(ActionEvent e)
+     /**
+      * @param frame the frame to set
+      */
+     public void setFrame(JFrame frame)
      {
-          String s = e.getActionCommand();
+          this.frame = frame;
+     }
 
-          if (s.equals("cut"))
-          {
-               t.cut();
-          } else if (s.equals("copy"))
-          {
-               t.copy();
-          } else if (s.equals("paste"))
-          {
-               t.paste();
-          } else if (s.equals("Save"))
-          {
-               // Create an object of JFileChooser class 
-               JFileChooser j = new JFileChooser("f:");
+     /**
+      * @return the textArea
+      */
+     public JTextArea getTextArea()
+     {
+          return textArea;
+     }
 
-               // Invoke the showsSaveDialog function to show the save dialog 
-               int r = j.showSaveDialog(null);
-
-               if (r == JFileChooser.APPROVE_OPTION)
-               {
-
-                    // Set the label to the path of the selected directory 
-                    File fi = new File(j.getSelectedFile().getAbsolutePath());
-
-                    try
-                    {
-                         // Create a file writer 
-                         FileWriter wr = new FileWriter(fi, false);
-
-                         // Create buffered writer to write 
-                         BufferedWriter w = new BufferedWriter(wr);
-
-                         // Write 
-                         w.write(t.getText());
-
-                         w.flush();
-                         w.close();
-                    } catch (Exception evt)
-                    {
-                         JOptionPane.showMessageDialog(f, evt.getMessage());
-                    }
-               }
-               // If the user cancelled the operation 
-               else
-                    JOptionPane.showMessageDialog(f, "the user cancelled the operation");
-          } else if (s.equals("Print"))
-          {
-               try
-               {
-                    // print the file 
-                    t.print();
-               } catch (Exception evt)
-               {
-                    JOptionPane.showMessageDialog(f, evt.getMessage());
-               }
-          } else if (s.equals("Open"))
-          {
-               // Create an object of JFileChooser class 
-               JFileChooser j = new JFileChooser("f:");
-
-               // Invoke the showsOpenDialog function to show the save dialog 
-               int r = j.showOpenDialog(null);
-
-               // If the user selects a file 
-               if (r == JFileChooser.APPROVE_OPTION)
-               {
-                    // Set the label to the path of the selected directory 
-                    File fi = new File(j.getSelectedFile().getAbsolutePath());
-
-                    try
-                    {
-                         // String 
-                         String s1 = "", sl = "";
-
-                         // File reader 
-                         FileReader fr = new FileReader(fi);
-
-                         // Buffered reader 
-                         BufferedReader br = new BufferedReader(fr);
-
-                         // Initilize sl 
-                         sl = br.readLine();
-
-                         // Take the input from the file 
-                         while ((s1 = br.readLine()) != null)
-                         {
-                              sl = sl + "\n" + s1;
-                         }
-
-                         // Set the text 
-                         t.setText(sl);
-                    } catch (Exception evt)
-                    {
-                         JOptionPane.showMessageDialog(f, evt.getMessage());
-                    }
-               }
-               // If the user cancelled the operation 
-               else
-                    JOptionPane.showMessageDialog(f, "the user cancelled the operation");
-          } else if (s.equals("New"))
-          {
-               t.setText("");
-          } else if (s.equals("close"))
-          {
-               f.setVisible(false);
-          }
+     /**
+      * @param textArea the textArea to set
+      */
+     public void setTextArea(JTextArea textArea)
+     {
+          this.textArea = textArea;
      }
 }
