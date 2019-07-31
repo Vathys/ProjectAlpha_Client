@@ -13,6 +13,22 @@ import java.net.UnknownHostException;
 
 public class Client extends Thread
 {
+     /* psuedo-code
+      * {(+)"\n\n//This is a comment"(line, 7)(fileName, Main.java)}
+      * (+) OR (-) -> addition OR deletion to the file
+      * "" -> what message is being added or deleted
+      * (line, ...) -> where the edit has started
+      * (fileName, ...) -> which file the edit is occuring
+      * (character, ...) -> this the character after which the edit occurs
+      * 
+          Contains changes from the Editor every x seconds...
+          
+          private Queue<String> incomingQueue;
+          
+          Contains the messages going to the server in proper protocol...
+          
+          private Queue<String> outgoingQueue;
+     */
      private Socket clientSocket;
      private String serverName;
      private int port;
@@ -29,7 +45,7 @@ public class Client extends Thread
                System.out.println("Just connected to " + clientSocket.getRemoteSocketAddress());
 
                OutputStream outToServer = clientSocket.getOutputStream();
-               DataOutputStream out = new DataOutputStream(outToServer);               
+               DataOutputStream out = new DataOutputStream(outToServer);              
                out.writeUTF("Hello from " + clientSocket.getLocalSocketAddress() + " \r\n");
                
           } catch (Exception e)
@@ -84,7 +100,7 @@ public class Client extends Thread
          int port = Integer.parseInt(args[1]);
          
          new Client(serverName, port);
-         
+         new Editor();
 }
 
 }
