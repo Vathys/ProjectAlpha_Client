@@ -19,7 +19,7 @@ public class CustomListener implements ActionListener, DocumentListener
 {
      Client client;
      Editor parent;
-
+     
      public CustomListener(Client c, Editor e)
      {
           client = c;
@@ -189,11 +189,15 @@ public class CustomListener implements ActionListener, DocumentListener
           msg += "[off" + e.getOffset() + "]";
           msg += "[len" + e.getLength() + "]";
 
-          msg += "\"" + val + "\"";
+          if(val.equals("\n"))
+          {
+               msg += "newLine";
+          }
+          else
+          {
+               msg += "\"" + val + "\"";
+          }
 
-          msg = "{" + msg + "}";
-          
           client.send(msg);
-          System.out.println("msg sent: " + msg);
      }
 }

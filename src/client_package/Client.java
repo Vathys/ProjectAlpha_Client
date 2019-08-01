@@ -12,6 +12,21 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Client extends Thread
 {
+     /* Current protocol
+      * 
+      * {IP, EventType Offset Length StringValue}
+      * 
+      * IP -> self-explainable
+      * EventType -> [+ (EventType.INSERT) OR - (EventType.REMOVE)]
+      * Offset -> [off, #]
+      * Length -> [len, #]
+      * StringValue -> "val"
+      * 
+      * Example:
+      * 
+      * {[xxx.xxx.xxx][+][off12][len1]"d"}
+      **/
+     
      private Socket clientSocket;
      private String serverName;
      private int port;
@@ -38,7 +53,7 @@ public class Client extends Thread
 
           new Editor(this);
 
-          send("Hello from " + clientSocket.getLocalSocketAddress() + " \r\n");
+          //send("Hello from " + clientSocket.getLocalSocketAddress() + " \r\n");
 
           this.start();
      }
@@ -56,7 +71,7 @@ public class Client extends Thread
                     {
                          temp = (char) cin.read();
                          msg += temp;
-                         ArrayList<String> check = RegexParser.matches("^\\{(.*)\\}$", msg);
+                         ArrayList<String> check = RegexParser.matches("^\\{(.*|\\s)\\}$", msg);
                          if (!check.isEmpty())
                          {
                               System.out.println("Check 1: " + check.get(1));
@@ -78,6 +93,8 @@ public class Client extends Thread
 
      public void send(String msg)
      {
+          msg = "[" + clientSocket.getInetAddress().getHostAddress() + "]" + msg;
+          msg = "{" + msg + "}";
           com.add(msg);
      }
 

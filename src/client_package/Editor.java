@@ -8,20 +8,6 @@ import javax.swing.JTextArea;
 
 public class Editor
 {
-     /* Current protocol
-      * 
-      * {EventType Offset Length StringValue}
-      * 
-      * EventType -> [+ (EventType.INSERT) OR - (EventType.REMOVE)]
-      * Offset -> [off, #]
-      * Length -> [len, #]
-      * StringValue -> "val"
-      * 
-      * Example:
-      * 
-      * {[+][off12][len1]"d"}
-      **/
-
      private JFrame frame;
      private JTextArea textArea;
 
