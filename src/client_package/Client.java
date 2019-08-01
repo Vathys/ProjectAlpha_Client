@@ -71,7 +71,7 @@ public class Client extends Thread
                     {
                          temp = (char) cin.read();
                          msg += temp;
-                         ArrayList<String> check = RegexParser.matches("^\\{(.*|\\s)\\}$", msg);
+                         ArrayList<String> check = RegexParser.matches("^\\{(.*)\\}$", msg);
                          if (!check.isEmpty())
                          {
                               System.out.println("Check 1: " + check.get(1));
@@ -93,7 +93,6 @@ public class Client extends Thread
 
      public void send(String msg)
      {
-          msg = "[" + clientSocket.getInetAddress().getHostAddress() + "]" + msg;
           msg = "{" + msg + "}";
           com.add(msg);
      }
