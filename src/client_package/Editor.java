@@ -1,17 +1,10 @@
 package client_package;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.Charset;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.metal.OceanTheme;
 
 public class Editor
 {
@@ -28,12 +21,12 @@ public class Editor
       * 
       * {[+][off12][len1]"d"}
       **/
-     
+
      private JFrame frame;
      private JTextArea textArea;
-     
+
      private CustomListener lis;
-     
+
      // Constructor 
      public Editor(Client c)
      {
@@ -42,7 +35,7 @@ public class Editor
           {
                // Set metl look and feel 
                UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-
+          
                // Set theme to ocean 
                MetalLookAndFeel.setCurrentTheme(new OceanTheme());
           } catch (Exception e)
@@ -51,10 +44,10 @@ public class Editor
           }*/
 
           lis = new CustomListener(c, this);
-          
+
           //Frame
           frame = new JFrame("Editor");
-          
+
           // Text component 
           textArea = new JTextArea();
           textArea.getDocument().addDocumentListener(lis);
@@ -64,7 +57,7 @@ public class Editor
           //Function of New, Open, Save will depend on where
           //Document will be saved...
           //either in the server or one of the clients...
-          
+
           // Create a menubar 
           JMenuBar mb = new JMenuBar();
 
@@ -119,7 +112,7 @@ public class Editor
           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
           frame.setVisible(true);
      }
-     
+
      /**
       * @return the frame
       */
