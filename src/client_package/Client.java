@@ -88,6 +88,7 @@ public class Client extends Thread
                     if (!com.isEmpty())
                     {
                          byte[] encoded = com.poll().getBytes(Charset.forName("UTF-8"));
+                         System.out.println(new String(encoded, Charset.forName("UTF-8")));
                          cpw.println(new String(encoded, Charset.forName("UTF-8")));
                     }
                }
