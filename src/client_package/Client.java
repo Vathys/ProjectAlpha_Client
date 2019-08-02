@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -40,11 +41,14 @@ public class Client extends Thread
           this.port = port;
 
           com = new ConcurrentLinkedQueue<String>();
+          
+          
 
           System.out.println("Connecting to " + serverName + " on port " + port);
           try
           {
-               clientSocket = new Socket(serverName, port);
+               clientSocket = new Socket(InetAddress.getByName(serverName), port);
+               //clientSocket = new Socket(serverName, port);
                System.out.println("Just connected to " + clientSocket.getRemoteSocketAddress());
 
           } catch (Exception e)
