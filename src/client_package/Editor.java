@@ -106,6 +106,8 @@ public class Editor
 
      public void updateDoc(String com)
      {
+          textArea.getDocument().removeDocumentListener(lis);
+          
           ArrayList<String> check = RegexParser.matches("\\[([+|-])\\]\\[off(\\d)\\]\\[len(\\d)\\]\"(.*?)\"", com);
           for(int i = 1; i < check.size(); i++)
           {
@@ -136,6 +138,8 @@ public class Editor
           {
                e.printStackTrace();
           }
+          
+          textArea.getDocument().addDocumentListener(lis);
      }
      
      /**
