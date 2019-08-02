@@ -1,10 +1,13 @@
 package client_package;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
+import javax.swing.text.BadLocationException;
 
 public class Editor
 {
@@ -13,6 +16,8 @@ public class Editor
 
      private CustomListener lis;
 
+     
+     
      // Constructor 
      public Editor(Client c)
      {
@@ -37,7 +42,7 @@ public class Editor
           // Text component 
           textArea = new JTextArea();
           textArea.getDocument().addDocumentListener(lis);
-
+          
           //REDO MENU BAR
           //Especially New, Open, Save
           //Function of New, Open, Save will depend on where
@@ -99,6 +104,40 @@ public class Editor
           frame.setVisible(true);
      }
 
+     public void updateDoc(String com)
+     {
+          ArrayList<String> check = RegexParser.matches("\\[([+|-])\\]\\[off(\\d)\\]\\[len(\\d)\\]\"(.*?)\"", com);
+          for(int i = 1; i < check.size(); i++)
+          {
+               System.out.println(i + ": " + check.get(i));
+          }
+          int offset = Integer.valueOf(check.get(2)).intValue();
+          int length = Integer.valueOf(check.get(3)).intValue();
+          String str = check.get(4);
+          
+          if(str.equals("newLine") && length == 1)
+          {
+               str = "\n";
+          }
+          
+          try
+          {
+               if(check.get(1).equals("+"))
+               {
+                    textArea.getDocument().insertString(offset, str, null);
+                    lis.ignoreEvent = true;
+               }
+               else if(check.get(1).equals("-"))
+               {
+                    textArea.getDocument().remove(offset, length);
+                    lis.ignoreEvent = true;
+               }
+          } catch(BadLocationException e)
+          {
+               e.printStackTrace();
+          }
+     }
+     
      /**
       * @return the frame
       */

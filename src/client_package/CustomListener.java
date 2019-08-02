@@ -17,13 +17,15 @@ import javax.swing.text.BadLocationException;
 
 public class CustomListener implements ActionListener, DocumentListener
 {
-     Client client;
-     Editor parent;
+     private Client client;
+     private Editor parent;
+     public boolean ignoreEvent;
      
      public CustomListener(Client c, Editor e)
      {
           client = c;
           parent = e;
+          ignoreEvent = false;
      }
 
      @Override
@@ -146,8 +148,15 @@ public class CustomListener implements ActionListener, DocumentListener
           String val;
           try
           {
-               val = e.getDocument().getText(e.getOffset(), e.getLength());
-               send(e, val);
+               if(!ignoreEvent)
+               {
+                    val = e.getDocument().getText(e.getOffset(), e.getLength());
+                    send(e, val);
+                    
+               } else
+               {
+                    ignoreEvent = false;
+               }
           } catch (BadLocationException e1)
           {
                e1.printStackTrace();
@@ -160,8 +169,15 @@ public class CustomListener implements ActionListener, DocumentListener
           String val;
           try
           {
-               val = e.getDocument().getText(e.getOffset(), e.getLength());
-               send(e, val);
+               if(!ignoreEvent)
+               {
+                    val = e.getDocument().getText(e.getOffset(), e.getLength());
+                    send(e, val);
+               }
+               else
+               {
+                    ignoreEvent = false;
+               }
           } catch (BadLocationException e1)
           {
                e1.printStackTrace();
@@ -191,7 +207,7 @@ public class CustomListener implements ActionListener, DocumentListener
 
           if(val.equals("\n"))
           {
-               msg += "newLine";
+               msg += "\"" + "newLine" + "\"";
           }
           else
           {
