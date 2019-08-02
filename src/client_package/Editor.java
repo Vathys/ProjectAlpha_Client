@@ -109,12 +109,12 @@ public class Editor
           textArea.getDocument().removeDocumentListener(lis);
           
           ArrayList<String> check = RegexParser.matches("\\[([+|-])\\]\\[off(\\d+)\\]\\[len(\\d+)\\]\"(.*?)\"", com);
-          
+          /*
           for(int i = 1; i < check.size(); i++)
           {
                System.out.println(i + ": " + check.get(i));
           }
-          
+          */
           int offset = Integer.valueOf(check.get(2)).intValue();
           int length = Integer.valueOf(check.get(3)).intValue();
           String str = check.get(4);
