@@ -20,12 +20,11 @@ public class CustomListener implements ActionListener, DocumentListener
      private Client client;
      private Editor parent;
      public boolean ignoreEvent;
-     
+
      public CustomListener(Client c, Editor e)
      {
           client = c;
           parent = e;
-          ignoreEvent = false;
      }
 
      @Override
@@ -123,7 +122,7 @@ public class CustomListener implements ActionListener, DocumentListener
 
                          // Set the text 
                          parent.getTextArea().setText(sl);
-                         
+
                          br.close();
                     } catch (Exception evt)
                     {
@@ -148,15 +147,8 @@ public class CustomListener implements ActionListener, DocumentListener
           String val;
           try
           {
-               if(!ignoreEvent)
-               {
-                    val = e.getDocument().getText(e.getOffset(), e.getLength());
-                    send(e, val);
-                    
-               } else
-               {
-                    ignoreEvent = false;
-               }
+               val = e.getDocument().getText(e.getOffset(), e.getLength());
+               send(e, val);
           } catch (BadLocationException e1)
           {
                e1.printStackTrace();
@@ -169,15 +161,8 @@ public class CustomListener implements ActionListener, DocumentListener
           String val;
           try
           {
-               if(!ignoreEvent)
-               {
-                    val = e.getDocument().getText(e.getOffset(), e.getLength());
-                    send(e, val);
-               }
-               else
-               {
-                    ignoreEvent = false;
-               }
+               val = e.getDocument().getText(e.getOffset(), e.getLength());
+               send(e, val);
           } catch (BadLocationException e1)
           {
                e1.printStackTrace();
@@ -205,11 +190,10 @@ public class CustomListener implements ActionListener, DocumentListener
           msg += "[off" + e.getOffset() + "]";
           msg += "[len" + e.getLength() + "]";
 
-          if(val.equals("\n"))
+          if (val.equals("\n"))
           {
                msg += "\"" + "newLine" + "\"";
-          }
-          else
+          } else
           {
                msg += "\"" + val + "\"";
           }
