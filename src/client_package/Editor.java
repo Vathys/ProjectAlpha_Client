@@ -108,7 +108,7 @@ public class Editor
      {
           textArea.getDocument().removeDocumentListener(lis);
           
-          ArrayList<String> check = RegexParser.matches("\\[([+|-])\\]\\[off(\\d)\\]\\[len(\\d)\\]\"(.*?)\"", com);
+          ArrayList<String> check = RegexParser.matches("\\[([+|-])\\]\\[off(\\d+)\\]\\[len(\\d+)\\]\"(.*?)\"", com);
           for(int i = 1; i < check.size(); i++)
           {
                System.out.println(i + ": " + check.get(i));
