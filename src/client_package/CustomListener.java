@@ -161,7 +161,6 @@ public class CustomListener implements ActionListener, DocumentListener
           String val;
           try
           {
-               System.out.println(e.getOffset() + ", " + e.getLength());
                val = e.getDocument().getText(e.getOffset(), e.getLength());
                send(e, val);
           } catch (BadLocationException e1)
@@ -201,5 +200,6 @@ public class CustomListener implements ActionListener, DocumentListener
 
           
           client.send(msg);
+          System.out.println(msg);
      }
 }
