@@ -18,14 +18,22 @@ public class Client extends Thread
       * 
       * {EventType Offset Length StringValue}
       * 
+<<<<<<< HEAD
+      * The whole message (0)
+      * EventType -> [+ (EventType.INSERT) OR - (EventType.REMOVE)] (1)
+      * Offset -> [off, #] (2)
+      * Length -> [len, #] (3)
+      * StringValue -> "val" (4)
+=======
       * EventType -> [+ (EventType.INSERT) OR - (EventType.REMOVE)]
       * Offset -> [off, #]
       * Length -> [len, #]
       * StringValue -> "val"
+>>>>>>> 0355b35cc4e705b458a2f49e06efa58768fde37c
       * 
       * Example:
       * 
-      * {[xxx.xxx.xxx][+][off12][len1]"d"}
+      * {[+][off12][len1]"d"}
       **/
      
      private Socket clientSocket;

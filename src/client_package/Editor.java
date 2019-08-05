@@ -119,9 +119,35 @@ public class Editor
           int length = Integer.valueOf(check.get(3)).intValue();
           String str = check.get(4);
           
-          if(str.equals("newLine") && length == 1)
+          //"\n\n1" length = 3: str.length(): 15
+          if(str.length() != length)
           {
-               str = "\n";
+               String temp = str;
+               int n = str.length() - length;
+               n = n / 6;
+               
+               int[] offsetArr = new int[n];
+               
+               for(int i = 0; i < n; i++)
+               {
+                    offsetArr[i] = temp.indexOf("newLine");
+                    temp = str.substring(offsetArr[i] + 7);
+               }
+               
+               if(n == 1)
+               {
+                    str = str.substring(0, offsetArr[0]) + "\n" + str.substring(offsetArr[0] + 7);
+               }
+               else
+               {
+                    String temp2 = str.substring(0, offsetArr[0]);
+                    for(int i = 1; i < n; i++)
+                    {
+                         temp2 += "\n" + str.substring(offsetArr[0] + 7, offsetArr[i]);
+                    }
+                    temp2 += str.substring(offsetArr[n - 1] + 7);
+                    str = temp2;
+               }
           }
           
           try
@@ -129,12 +155,10 @@ public class Editor
                if(check.get(1).equals("+"))
                {
                     textArea.getDocument().insertString(offset, str, null);
-                    lis.ignoreEvent = true;
                }
                else if(check.get(1).equals("-"))
                {
                     textArea.getDocument().remove(offset, length);
-                    lis.ignoreEvent = true;
                }
           } catch(BadLocationException e)
           {

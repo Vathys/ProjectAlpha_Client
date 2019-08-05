@@ -198,6 +198,7 @@ public class CustomListener implements ActionListener, DocumentListener
                msg += "\"" + val + "\"";
           }
 
+          
           client.send(msg);
      }
 }
