@@ -126,6 +126,8 @@ public class Editor
                int n = str.length() - length;
                n = n / 6;
                
+               System.out.println(n);
+               
                int[] offsetArr = new int[n];
                
                for(int i = 0; i < n; i++)
