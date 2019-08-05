@@ -158,15 +158,7 @@ public class CustomListener implements ActionListener, DocumentListener
      @Override
      public void removeUpdate(DocumentEvent e)
      {
-          String val;
-          try
-          {
-               val = e.getDocument().getText(e.getOffset(), e.getLength());
-               send(e, val);
-          } catch (BadLocationException e1)
-          {
-               e1.printStackTrace();
-          }
+          send(e, "");
      }
 
      @Override
@@ -200,6 +192,6 @@ public class CustomListener implements ActionListener, DocumentListener
 
           
           client.send(msg);
-          System.out.println(msg);
+          //System.out.println(msg);
      }
 }
