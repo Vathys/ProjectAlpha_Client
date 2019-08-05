@@ -1,10 +1,13 @@
 package client_package;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
+import javax.swing.text.BadLocationException;
 
 public class Editor
 {
@@ -99,6 +102,69 @@ public class Editor
           frame.setVisible(true);
      }
 
+     public void updateDoc(String com)
+     {
+          textArea.getDocument().removeDocumentListener(lis);
+          
+          ArrayList<String> check = RegexParser.matches("\\[([+|-])\\]\\[off(\\d+)\\]\\[len(\\d+)\\]\"(.*?)\"", com);
+          /*
+          for(int i = 1; i < check.size(); i++)
+          {
+               System.out.println(i + ": " + check.get(i));
+          }
+          */
+          int offset = Integer.valueOf(check.get(2)).intValue();
+          int length = Integer.valueOf(check.get(3)).intValue();
+          String str = check.get(4);
+          //"\n\n1" length = 3: str.length(): 15
+          if(str.length() != length)
+          {
+               String temp = str;
+               int n = str.length() - length;
+               n = n / 6;
+               
+               int[] offsetArr = new int[n];
+               
+               for(int i = 0; i < n; i++)
+               {
+                    offsetArr[i] = temp.indexOf("newLine");
+                    temp = str.substring(offsetArr[i] + 7);
+               }
+               
+               if(n == 1)
+               {
+                    str = str.substring(0, offsetArr[0]) + "\n" + str.substring(offsetArr[0] + 7);
+               }
+               else
+               {
+                    String temp2 = str.substring(0, offsetArr[0]);
+                    for(int i = 1; i < n; i++)
+                    {
+                         temp2 += "\n" + str.substring(offsetArr[0] + 7, offsetArr[i]);
+                    }
+                    temp2 += str.substring(offsetArr[n - 1] + 7);
+                    str = temp2;
+               }
+          }
+          
+          try
+          {
+               if(check.get(1).equals("+"))
+               {
+                    textArea.getDocument().insertString(offset, str, null);
+               }
+               else if(check.get(1).equals("-"))
+               {
+                    textArea.getDocument().remove(offset, length);
+               }
+          } catch(BadLocationException e)
+          {
+               e.printStackTrace();
+          }
+          
+          textArea.getDocument().addDocumentListener(lis);
+     }
+     
      /**
       * @return the frame
       */
