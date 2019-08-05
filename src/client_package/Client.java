@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -12,15 +13,23 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Client extends Thread
 {
-     /* Current protocol
+     /* 
+      * Current protocol
       * 
-      * {IP, EventType Offset Length StringValue}
+      * {EventType Offset Length StringValue}
       * 
+<<<<<<< HEAD
       * The whole message (0)
       * EventType -> [+ (EventType.INSERT) OR - (EventType.REMOVE)] (1)
       * Offset -> [off, #] (2)
       * Length -> [len, #] (3)
       * StringValue -> "val" (4)
+=======
+      * EventType -> [+ (EventType.INSERT) OR - (EventType.REMOVE)]
+      * Offset -> [off, #]
+      * Length -> [len, #]
+      * StringValue -> "val"
+>>>>>>> 0355b35cc4e705b458a2f49e06efa58768fde37c
       * 
       * Example:
       * 
@@ -30,6 +39,7 @@ public class Client extends Thread
      private Socket clientSocket;
      private String serverName;
      private int port;
+     private Editor e;
 
      private ConcurrentLinkedQueue<String> com;
 
@@ -39,11 +49,14 @@ public class Client extends Thread
           this.port = port;
 
           com = new ConcurrentLinkedQueue<String>();
+          
+          
 
           System.out.println("Connecting to " + serverName + " on port " + port);
           try
           {
-               clientSocket = new Socket(serverName, port);
+               clientSocket = new Socket(InetAddress.getByName(serverName), port);
+               //clientSocket = new Socket(serverName, port);
                System.out.println("Just connected to " + clientSocket.getRemoteSocketAddress());
 
           } catch (Exception e)
@@ -51,7 +64,7 @@ public class Client extends Thread
                e.printStackTrace();
           }
 
-          new Editor(this);
+          e = new Editor(this);
 
           //send("Hello from " + clientSocket.getLocalSocketAddress() + " \r\n");
 
@@ -74,7 +87,8 @@ public class Client extends Thread
                          ArrayList<String> check = RegexParser.matches("^\\{(.*)\\}$", msg);
                          if (!check.isEmpty())
                          {
-                              System.out.println("Check 1: " + check.get(1));
+                              //System.out.println("Command: " + check.get(1));
+                              e.updateDoc(check.get(1));
                               msg = "";
                          }
                     }
@@ -82,6 +96,7 @@ public class Client extends Thread
                     if (!com.isEmpty())
                     {
                          byte[] encoded = com.poll().getBytes(Charset.forName("UTF-8"));
+                         //System.out.println(new String(encoded, Charset.forName("UTF-8")));
                          cpw.println(new String(encoded, Charset.forName("UTF-8")));
                     }
                }

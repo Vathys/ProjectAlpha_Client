@@ -16,6 +16,8 @@ public class Editor
 
      private CustomListener lis;
 
+     
+     
      // Constructor 
      public Editor(Client c)
      {
@@ -40,7 +42,7 @@ public class Editor
           // Text component 
           textArea = new JTextArea();
           textArea.getDocument().addDocumentListener(lis);
-
+          
           //REDO MENU BAR
           //Especially New, Open, Save
           //Function of New, Open, Save will depend on where
@@ -116,6 +118,7 @@ public class Editor
           int offset = Integer.valueOf(check.get(2)).intValue();
           int length = Integer.valueOf(check.get(3)).intValue();
           String str = check.get(4);
+          
           //"\n\n1" length = 3: str.length(): 15
           if(str.length() != length)
           {
