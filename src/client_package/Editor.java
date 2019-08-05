@@ -120,7 +120,7 @@ public class Editor
           String str = check.get(4);
           
           //"\n\n1" length = 3: str.length(): 15
-          if(str.length() != length)
+          if(str.length() != length && !str.equals(""))
           {
                String temp = str;
                int n = str.length() - length;
