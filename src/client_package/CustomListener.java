@@ -30,8 +30,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.text.BadLocationException;
 
-
-public class CustomListener implements ActionListener, DocumentListener, KeyListener 
+public class CustomListener implements ActionListener, DocumentListener, KeyListener
 {
      private Client client;
      private Editor parent;
@@ -154,21 +153,19 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
           } else if (s.equals("Close"))
           {
                parent.getFrame().setVisible(false);
-          }
-          else if(s.equals("+"))
+          } else if (s.equals("+"))
           {
-        	  Font font =  parent.getTextArea().getFont();
-        	  float size = font.getSize() + 1.0f;
-        	  parent.getTextArea().setFont(font.deriveFont(size));
-        	  System.out.println("+");
-          }
-          else if(s.equals("-"))
+               Font font = parent.getTextArea().getFont();
+               float size = font.getSize() + 1.0f;
+               parent.getTextArea().setFont(font.deriveFont(size));
+               System.out.println("+");
+          } else if (s.equals("-"))
           {
-        	  Font font =  parent.getTextArea().getFont();
-        	  float size = font.getSize() - 1.0f;
-        	  parent.getTextArea().setFont(font.deriveFont(size));
+               Font font = parent.getTextArea().getFont();
+               float size = font.getSize() - 1.0f;
+               parent.getTextArea().setFont(font.deriveFont(size));
           }
-      
+
      }
 
      @Override
@@ -220,42 +217,45 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
                msg += "\"" + val + "\"";
           }
 
-          
           client.send(msg);
           //System.out.println(msg);
      }
+
      boolean control_pressed = false;
-	@Override
-	public void keyPressed(KeyEvent e) {
 
-if ((e.getKeyCode() == KeyEvent.VK_EQUALS) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0))
+     @Override
+     public void keyPressed(KeyEvent e)
+     {
+
+          if ((e.getKeyCode() == KeyEvent.VK_EQUALS) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0))
           {
-        	  Font font =  parent.getTextArea().getFont();
-        	  float size = font.getSize() + 1.0f;
-        	  parent.getTextArea().setFont(font.deriveFont(size));
-          }
-          else if(e.getKeyCode() == KeyEvent.VK_MINUS && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0))
+               Font font = parent.getTextArea().getFont();
+               float size = font.getSize() + 1.0f;
+               parent.getTextArea().setFont(font.deriveFont(size));
+          } else if (e.getKeyCode() == KeyEvent.VK_MINUS && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0))
           {
-        	  Font font =  parent.getTextArea().getFont();
-        	  float size = font.getSize() - 1.0f;
-        	  parent.getTextArea().setFont(font.deriveFont(size));
+               Font font = parent.getTextArea().getFont();
+               float size = font.getSize() - 1.0f;
+               parent.getTextArea().setFont(font.deriveFont(size));
           }
-		
-	}
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		 if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-		  //    control_pressed = false;
-		    }
-		
-	}
+     }
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+     @Override
+     public void keyReleased(KeyEvent e)
+     {
+          // TODO Auto-generated method stub
+          if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+          {
+               //    control_pressed = false;
+          }
+
+     }
+
+     @Override
+     public void keyTyped(KeyEvent e)
+     {
+          // TODO Auto-generated method stub
+
+     }
 }
-

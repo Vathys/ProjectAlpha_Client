@@ -23,7 +23,7 @@ public class Editor extends Thread
      private CustomListener lis;
 
      private BlockingQueue<String> updateCom;
-     
+
      // Constructor 
      public Editor(Client c)
      {
@@ -48,19 +48,19 @@ public class Editor extends Thread
           // Text component 
           textArea = new JTextArea();
           textArea.getDocument().addDocumentListener(lis);
-          
+
           /*
           JButton incButton = new JButton("+");
           incButton.setSize(100, 100);
           textArea.add(incButton);
-        incButton.setLocation(1000, 1000);
+          incButton.setLocation(1000, 1000);
           incButton.addActionListener(lis);
           JButton decButton = new JButton("-");
           decButton.setSize(100, 100);
           textArea.add(decButton);
           decButton.addActionListener(lis);
           */
-          
+
           //REDO MENU BAR
           //Especially New, Open, Save
           //Function of New, Open, Save will depend on where
@@ -82,7 +82,7 @@ public class Editor extends Thread
           JMenuItem mi11 = new JMenuItem("-");
           KeyStroke ctrlPlusKeyStroke = KeyStroke.getKeyStroke("control +");
           mi10.setAccelerator(ctrlPlusKeyStroke);
-        
+
           // Add action listener 
           mi1.addActionListener(lis);
           mi2.addActionListener(lis);
@@ -91,14 +91,13 @@ public class Editor extends Thread
           mi10.addActionListener(lis);
           mi11.addActionListener(lis);
           textArea.addKeyListener(lis);
-		  frame.addKeyListener(lis);
+          frame.addKeyListener(lis);
           m1.add(mi1);
           m1.add(mi2);
           m1.add(mi3);
           m1.add(mi9);
           m1.add(mi10);
           m1.add(mi11);
-          
 
           // Create amenu for menu 
           JMenu m2 = new JMenu("Edit");
@@ -132,11 +131,10 @@ public class Editor extends Thread
           frame.setVisible(true);
      }
 
-     
      @Override
      public void run()
      {
-          while(true)
+          while (true)
           {
                try
                {
@@ -147,10 +145,11 @@ public class Editor extends Thread
                }
           }
      }
+
      public void updateDoc(String com)
      {
           textArea.getDocument().removeDocumentListener(lis);
-          
+
           ArrayList<String> check = RegexParser.matches("\\[([+|-])\\]\\[off(\\d+)\\]\\[len(\\d+)\\]\"(.*?)\"", com);
           /*
           for(int i = 1; i < check.size(); i++)
@@ -161,30 +160,29 @@ public class Editor extends Thread
           int offset = Integer.valueOf(check.get(2)).intValue();
           int length = Integer.valueOf(check.get(3)).intValue();
           String str = check.get(4);
-          
+
           //"\n\n1" length = 3: str.length(): 15
-          if(str.length() != length && !str.equals(""))
+          if (str.length() != length && !str.equals(""))
           {
                String temp = str;
                int n = str.length() - length;
                n = n / 6;
-               
+
                int[] offsetArr = new int[n];
-               
-               for(int i = 0; i < n; i++)
+
+               for (int i = 0; i < n; i++)
                {
                     offsetArr[i] = temp.indexOf("newLine");
                     temp = str.substring(offsetArr[i] + 7);
                }
-               
-               if(n == 1)
+
+               if (n == 1)
                {
                     str = str.substring(0, offsetArr[0]) + "\n" + str.substring(offsetArr[0] + 7);
-               }
-               else
+               } else
                {
                     String temp2 = str.substring(0, offsetArr[0]);
-                    for(int i = 1; i < n; i++)
+                    for (int i = 1; i < n; i++)
                     {
                          temp2 += "\n" + str.substring(offsetArr[0] + 7, offsetArr[i]);
                     }
@@ -192,31 +190,29 @@ public class Editor extends Thread
                     str = temp2;
                }
           }
-          
+
           try
           {
-               if(check.get(1).equals("+"))
+               if (check.get(1).equals("+"))
                {
                     textArea.getDocument().insertString(offset, str, null);
-               }
-               else if(check.get(1).equals("-"))
+               } else if (check.get(1).equals("-"))
                {
                     textArea.getDocument().remove(offset, length);
                }
-          } catch(BadLocationException e)
+          } catch (BadLocationException e)
           {
                e.printStackTrace();
           }
-          
+
           textArea.getDocument().addDocumentListener(lis);
      }
-     
 
      public void addUpdate(String com)
      {
           updateCom.add(com);
      }
-     
+
      /**
       * @return the frame
       */
