@@ -109,12 +109,15 @@ public class Editor extends Thread
      @Override
      public void run()
      {
-          try
+          while(true)
           {
-               updateDoc(updateCom.take());
-          } catch (InterruptedException e)
-          {
-               e.printStackTrace();
+               try
+               {
+                    updateDoc(updateCom.take());
+               } catch (InterruptedException e)
+               {
+                    e.printStackTrace();
+               }
           }
      }
      
