@@ -61,6 +61,7 @@ public class Client extends Thread
           //send("Hello from " + clientSocket.getLocalSocketAddress() + " \r\n");
 
           this.start();
+          e.start();
      }
 
      @Override
