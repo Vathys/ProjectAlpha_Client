@@ -1,6 +1,7 @@
 package client_package;
 
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -9,14 +10,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 
-public class Editor
+public class Editor extends Thread
 {
      private JFrame frame;
      private JTextArea textArea;
 
      private CustomListener lis;
 
-     
+     private BlockingQueue<String> updateCom;
      
      // Constructor 
      public Editor(Client c)
@@ -104,6 +105,18 @@ public class Editor
           frame.setVisible(true);
      }
 
+     @Override
+     public void run()
+     {
+          try
+          {
+               updateDoc(updateCom.take());
+          } catch (InterruptedException e)
+          {
+               e.printStackTrace();
+          }
+     }
+     
      public void updateDoc(String com)
      {
           textArea.getDocument().removeDocumentListener(lis);
@@ -166,6 +179,11 @@ public class Editor
           }
           
           textArea.getDocument().addDocumentListener(lis);
+     }
+     
+     public void addUpdate(String com)
+     {
+          updateCom.add(com);
      }
      
      /**

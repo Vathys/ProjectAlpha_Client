@@ -3,7 +3,6 @@ package client_package;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -18,18 +17,11 @@ public class Client extends Thread
       * 
       * {EventType Offset Length StringValue}
       * 
-<<<<<<< HEAD
       * The whole message (0)
       * EventType -> [+ (EventType.INSERT) OR - (EventType.REMOVE)] (1)
       * Offset -> [off, #] (2)
       * Length -> [len, #] (3)
       * StringValue -> "val" (4)
-=======
-      * EventType -> [+ (EventType.INSERT) OR - (EventType.REMOVE)]
-      * Offset -> [off, #]
-      * Length -> [len, #]
-      * StringValue -> "val"
->>>>>>> 0355b35cc4e705b458a2f49e06efa58768fde37c
       * 
       * Example:
       * 
@@ -88,7 +80,7 @@ public class Client extends Thread
                          if (!check.isEmpty())
                          {
                               //System.out.println("Command: " + check.get(1));
-                              e.updateDoc(check.get(1));
+                              e.addUpdate(check.get(1));
                               msg = "";
                          }
                     }
