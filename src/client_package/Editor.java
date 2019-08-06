@@ -2,6 +2,7 @@ package client_package;
 
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -36,7 +37,7 @@ public class Editor extends Thread
           }*/
 
           lis = new CustomListener(c, this);
-
+          updateCom = new LinkedBlockingQueue<String>();
           //Frame
           frame = new JFrame("Editor");
 
