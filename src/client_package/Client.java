@@ -108,18 +108,19 @@ public class Client extends Thread
      private class ThreadWriter extends Thread
      {
           Client c;
-          
+
           public ThreadWriter(Client c)
           {
                this.c = c;
           }
-          
+
           @Override
           public void run()
           {
-               while (true)
+
+               try (PrintWriter cpw = new PrintWriter(clientSocket.getOutputStream(), true);)
                {
-                    try (PrintWriter cpw = new PrintWriter(c.clientSocket.getOutputStream(), true);)
+                    while (true)
                     {
                          if (!com.isEmpty())
                          {
@@ -127,10 +128,10 @@ public class Client extends Thread
                               System.out.println(new String(encoded, Charset.forName("UTF-8")));
                               cpw.println(new String(encoded, Charset.forName("UTF-8")));
                          }
-                    } catch (IOException e)
-                    {
-                         e.printStackTrace();
                     }
+               } catch (IOException e)
+               {
+                    e.printStackTrace();
                }
           }
      }
