@@ -34,6 +34,7 @@ public class Client extends Thread
      private Editor e;
 
      private ConcurrentLinkedQueue<String> com;
+     private ThreadWriter writer;
 
      public Client(String serverName, int port)
      {
@@ -41,7 +42,7 @@ public class Client extends Thread
           this.port = port;
 
           com = new ConcurrentLinkedQueue<String>();
-          
+          writer = new ThreadWriter();
           
 
           System.out.println("Connecting to " + serverName + " on port " + port);
@@ -60,14 +61,21 @@ public class Client extends Thread
 
           //send("Hello from " + clientSocket.getLocalSocketAddress() + " \r\n");
 
-          this.start();
+          this.startThreads();
           e.start();
      }
 
+     public void startThreads()
+     {
+          this.start();
+          writer.start();
+     }
+     
      @Override
      public void run()
      {
-          try (BufferedReader cin = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); PrintWriter cpw = new PrintWriter(clientSocket.getOutputStream(), true);)
+          try (BufferedReader cin = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); 
+                    )
           {
                while (true)
                {
@@ -86,12 +94,7 @@ public class Client extends Thread
                          }
                     }
 
-                    if (!com.isEmpty())
-                    {
-                         byte[] encoded = com.poll().getBytes(Charset.forName("UTF-8"));
-                         //System.out.println(new String(encoded, Charset.forName("UTF-8")));
-                         cpw.println(new String(encoded, Charset.forName("UTF-8")));
-                    }
+                    
                }
           } catch (IOException e)
           {
@@ -105,6 +108,27 @@ public class Client extends Thread
           com.add(msg);
      }
 
+     private class ThreadWriter extends Thread
+     {
+          @Override
+          public void run()
+          {
+               try(PrintWriter cpw = new PrintWriter(clientSocket.getOutputStream(), true);)
+               {
+                    if (!com.isEmpty())
+                    {
+                         byte[] encoded = com.poll().getBytes(Charset.forName("UTF-8"));
+                         System.out.println(new String(encoded, Charset.forName("UTF-8")));
+                         cpw.println(new String(encoded, Charset.forName("UTF-8")));
+                    }
+               }
+               catch (IOException e)
+               {
+                    e.printStackTrace();
+               }
+          }
+     }
+     
      public static void main(String[] args)
      {
           String serverName = args[0];
