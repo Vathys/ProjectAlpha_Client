@@ -27,7 +27,7 @@ public class Client extends Thread
       * 
       * {[+][off12][len1]"d"}
       **/
-     
+
      private Socket clientSocket;
      private String serverName;
      private int port;
@@ -43,7 +43,6 @@ public class Client extends Thread
 
           com = new ConcurrentLinkedQueue<String>();
           writer = new ThreadWriter();
-          
 
           System.out.println("Connecting to " + serverName + " on port " + port);
           try
@@ -70,12 +69,11 @@ public class Client extends Thread
           this.start();
           writer.start();
      }
-     
+
      @Override
      public void run()
      {
-          try (BufferedReader cin = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); 
-                    )
+          try (BufferedReader cin = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));)
           {
                while (true)
                {
@@ -94,7 +92,6 @@ public class Client extends Thread
                          }
                     }
 
-                    
                }
           } catch (IOException e)
           {
@@ -113,22 +110,24 @@ public class Client extends Thread
           @Override
           public void run()
           {
-               try(PrintWriter cpw = new PrintWriter(clientSocket.getOutputStream(), true);)
+               while (true)
                {
-                    if (!com.isEmpty())
+                    try (PrintWriter cpw = new PrintWriter(clientSocket.getOutputStream(), true);)
                     {
-                         byte[] encoded = com.poll().getBytes(Charset.forName("UTF-8"));
-                         System.out.println(new String(encoded, Charset.forName("UTF-8")));
-                         cpw.println(new String(encoded, Charset.forName("UTF-8")));
+                         if (!com.isEmpty())
+                         {
+                              byte[] encoded = com.poll().getBytes(Charset.forName("UTF-8"));
+                              System.out.println(new String(encoded, Charset.forName("UTF-8")));
+                              cpw.println(new String(encoded, Charset.forName("UTF-8")));
+                         }
+                    } catch (IOException e)
+                    {
+                         e.printStackTrace();
                     }
-               }
-               catch (IOException e)
-               {
-                    e.printStackTrace();
                }
           }
      }
-     
+
      public static void main(String[] args)
      {
           String serverName = args[0];
