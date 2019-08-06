@@ -42,7 +42,7 @@ public class Client extends Thread
           this.port = port;
 
           com = new ConcurrentLinkedQueue<String>();
-          writer = new ThreadWriter();
+          writer = new ThreadWriter(this);
 
           System.out.println("Connecting to " + serverName + " on port " + port);
           try
@@ -107,12 +107,19 @@ public class Client extends Thread
 
      private class ThreadWriter extends Thread
      {
+          Client c;
+          
+          public ThreadWriter(Client c)
+          {
+               this.c = c;
+          }
+          
           @Override
           public void run()
           {
                while (true)
                {
-                    try (PrintWriter cpw = new PrintWriter(clientSocket.getOutputStream(), true);)
+                    try (PrintWriter cpw = new PrintWriter(c.clientSocket.getOutputStream(), true);)
                     {
                          if (!com.isEmpty())
                          {
