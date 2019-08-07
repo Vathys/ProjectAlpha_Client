@@ -140,7 +140,7 @@ public class CustomListener implements ActionListener, DocumentListener, WindowL
                parent.getTextArea().setText("");
           } else if (s.equals("Close"))
           {
-               parent.getFrame().setVisible(false);
+               Editor.closeWindow();
           } else if (s.equals("Zoom In"))
           {
                Font font = parent.getTextArea().getFont();
