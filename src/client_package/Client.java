@@ -82,11 +82,11 @@ public class Client extends Thread
                     {
                          temp = (char) cin.read();
                          msg += temp;
-                         ArrayList<String> check = RegexParser.matches("^\\{(.*)\\}$", msg);
                          if (temp == '\n')
                          {
                               msg = "";
                          }
+                         ArrayList<String> check = RegexParser.matches("^\\{(.*)\\}$", msg);
                          if (!check.isEmpty())
                          {
                               //System.out.println(this.getName());
