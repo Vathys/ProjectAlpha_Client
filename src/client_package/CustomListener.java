@@ -20,7 +20,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.text.BadLocationException;
 
-public class CustomListener implements ActionListener, DocumentListener, KeyListener, WindowListener
+public class CustomListener implements ActionListener, DocumentListener, WindowListener
 {
      private Client client;
      private Editor parent;
@@ -143,7 +143,17 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
           } else if (s.equals("Close"))
           {
                parent.getFrame().setVisible(false);
-          } 
+          } else if (s.equals("Zoom In"))
+          {
+               Font font = parent.getTextArea().getFont();
+               float size = font.getSize() + 1.0f;
+               parent.getTextArea().setFont(font.deriveFont(size));
+          } else if (s.equals("Zoom Out"))
+          {
+               Font font = parent.getTextArea().getFont();
+               float size = font.getSize() - 1.0f;
+               parent.getTextArea().setFont(font.deriveFont(size));
+          }
      }
 
      @Override
@@ -189,7 +199,6 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
 
           if (val.equals("\n"))
           {
-        	  System.out.println("YOOOOOO");
                msg += "\"" + "newLine" + "\"";
           } else
           {
@@ -197,41 +206,7 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
           }
 
           client.send(msg);
-          System.out.println(Thread.currentThread().getName());
-          System.out.println(msg);
      }
-
-     @Override
-     public void keyPressed(KeyEvent e)
-     {
-
-          if ((e.getKeyCode() == KeyEvent.VK_EQUALS) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0))
-          {
-               Font font = parent.getTextArea().getFont();
-               float size = font.getSize() + 1.0f;
-               parent.getTextArea().setFont(font.deriveFont(size));
-          } else if (e.getKeyCode() == KeyEvent.VK_MINUS && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0))
-          {
-               Font font = parent.getTextArea().getFont();
-               float size = font.getSize() - 1.0f;
-               parent.getTextArea().setFont(font.deriveFont(size));
-          }
-
-     }
-
-     @Override
-     public void keyReleased(KeyEvent e)
-     {
-          
-     }
-
-     @Override
-     public void keyTyped(KeyEvent e)
-     {
-          // TODO Auto-generated method stub
-
-     }
-
      
      @Override
      public void windowOpened(WindowEvent e)

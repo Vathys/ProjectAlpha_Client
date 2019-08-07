@@ -1,14 +1,19 @@
 package client_package;
 
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.text.BadLocationException;
 
@@ -49,8 +54,8 @@ public class Editor extends Thread
           textArea = new JTextArea();
           textArea.getDocument().addDocumentListener(lis);
 
-          textArea.addKeyListener(lis);
-          frame.addKeyListener(lis);
+          //textArea.addKeyListener(lis);
+          //frame.addKeyListener(lis);
           frame.addWindowListener(lis);
           
           setupMenuBar();
@@ -120,9 +125,22 @@ public class Editor extends Thread
           
           mv.addActionListener(lis);
           
+          JMenuItem mi10 = new JMenuItem("Zoom In");
+          JMenuItem mi11 = new JMenuItem("Zoom Out");
           
-          textArea.addKeyListener(lis);
-          frame.addKeyListener(lis);
+          KeyStroke ctrlPlusKeyStroke = KeyStroke.getKeyStroke('=', InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
+          mi10.setAccelerator(ctrlPlusKeyStroke);
+          KeyStroke ctrlMinusKeyStroke = KeyStroke.getKeyStroke('-', InputEvent.CTRL_DOWN_MASK);
+          mi11.setAccelerator(ctrlMinusKeyStroke);
+         
+          mi10.addActionListener(lis);
+          mi11.addActionListener(lis);
+          
+          //textArea.addKeyListener(lis);
+          //frame.addKeyListener(lis);
+         
+          mv.add(mi10);
+          mv.add(mi11);
           
           mb.add(m1);
           mb.add(m2);  
