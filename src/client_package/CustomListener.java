@@ -1,8 +1,13 @@
 package client_package;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
@@ -11,8 +16,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent.EventType;
@@ -199,6 +211,7 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
 
           if (val.equals("\n"))
           {
+        	  System.out.println("YOOOOOO");
                msg += "\"" + "newLine" + "\"";
           } else
           {
@@ -206,12 +219,14 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
           }
 
           client.send(msg);
+          System.out.println(Thread.currentThread().getName());
           System.out.println(msg);
      }
 
      boolean control_pressed = false;
 
-     @Override
+     @SuppressWarnings("deprecation")
+	@Override
      public void keyPressed(KeyEvent e)
      {
 

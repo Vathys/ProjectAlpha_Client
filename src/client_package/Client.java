@@ -42,11 +42,12 @@ public class Client extends Thread
           this.port = port;
 
           com = new ConcurrentLinkedQueue<String>();
+          writer = new ThreadWriter(this);
 
-          System.out.println("Connecting to " + this.serverName + " on port " + this.port);
+          System.out.println("Connecting to " + serverName + " on port " + port);
           try
           {
-               clientSocket = new Socket(InetAddress.getByName(this.serverName), this.port);
+               clientSocket = new Socket(InetAddress.getByName(serverName), port);
                //clientSocket = new Socket(serverName, port);
                System.out.println("Just connected to " + clientSocket.getRemoteSocketAddress());
 
@@ -82,15 +83,15 @@ public class Client extends Thread
                     {
                          temp = (char) cin.read();
                          msg += temp;
-                         if (temp == '\n')
-                         {
-                              msg = "";
-                         }
                          ArrayList<String> check = RegexParser.matches("^\\{(.*)\\}$", msg);
+                         if(temp == '\n')
+                         {
+                      	   msg = "";
+                         }
                          if (!check.isEmpty())
                          {
-                              //System.out.println(this.getName());
-                              //System.out.println("Command: " + check.get(1));
+                        	// System.out.println(this.getName());
+                             // System.out.println("Command: " + check.get(1));
                               e.addUpdate(check.get(1));
                               msg = "";
                          }
@@ -111,6 +112,13 @@ public class Client extends Thread
 
      private class ThreadWriter extends Thread
      {
+          Client c;
+
+          public ThreadWriter(Client c)
+          {
+               this.c = c;
+          }
+
           @Override
           public void run()
           {
@@ -122,9 +130,10 @@ public class Client extends Thread
                          if (!com.isEmpty())
                          {
                               byte[] encoded = com.poll().getBytes(Charset.forName("UTF-8"));
-                              //System.out.println(new String(encoded, Charset.forName("UTF-8")));
+                             System.out.println(new String(encoded, Charset.forName("UTF-8")));
+                             
                               cpw.println(new String(encoded, Charset.forName("UTF-8")));
-
+                              
                          }
                     }
                } catch (IOException e)
