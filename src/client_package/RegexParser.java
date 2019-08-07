@@ -13,17 +13,13 @@ public class RegexParser
           Matcher matcher = p.matcher(text);
           if (matcher.find())
           {
-               //System.out.println("match found");
+               System.out.println("match found");
                for (int i = 0; i <= matcher.groupCount(); i++)
                {
                     match.add(matcher.group(i));
                }
           }
-          /*
-          else {
-               System.out.println("No match found.");
-          }
-          */
+          
           return match;
 
      }
