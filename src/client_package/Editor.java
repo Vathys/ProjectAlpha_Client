@@ -72,26 +72,31 @@ public class Editor extends Thread
           // Create a menubar 
           JMenuBar mb = new JMenuBar();
 
-          // Create amenu for menu 
+          // Create a menu for menu 
           JMenu m1 = new JMenu("File");
 
           // Create menu items 
           JMenuItem mi1 = new JMenuItem("New");
           JMenuItem mi2 = new JMenuItem("Open");
           JMenuItem mi3 = new JMenuItem("Save");
+          JMenuItem mi12 = new JMenuItem("Save As");
           JMenuItem mi9 = new JMenuItem("Print");
+          JMenuItem mc = new JMenuItem("Close");
 
           // Add action listener 
           mi1.addActionListener(lis);
           mi2.addActionListener(lis);
           mi3.addActionListener(lis);
           mi9.addActionListener(lis);
-          
+          mi12.addActionListener(lis);
+          mc.addActionListener(lis);
           m1.add(mi1);
           m1.add(mi2);
-          m1.add(mi3);
+          m1.add(mi3); 
+          m1.add(mi12);
           m1.add(mi9);
-
+          m1.add(mc);
+       
           // Create amenu for menu 
           JMenu m2 = new JMenu("Edit");
 
@@ -109,13 +114,20 @@ public class Editor extends Thread
           m2.add(mi5);
           m2.add(mi6);
 
-          JMenuItem mc = new JMenuItem("Close");
+         
 
-          mc.addActionListener(lis);
-
+          JMenu mv = new JMenu("View");
+          
+          mv.addActionListener(lis);
+          
+          
+          textArea.addKeyListener(lis);
+          frame.addKeyListener(lis);
+          
           mb.add(m1);
-          mb.add(m2);
-          mb.add(mc);
+          mb.add(m2);  
+          mb.add(mv);
+         
 
           frame.setJMenuBar(mb);
      }
@@ -192,6 +204,7 @@ public class Editor extends Thread
                }
           } catch (BadLocationException e)
           {
+     
                e.printStackTrace();
           }
 

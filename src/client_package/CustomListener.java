@@ -189,6 +189,7 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
 
           if (val.equals("\n"))
           {
+        	  System.out.println("YOOOOOO");
                msg += "\"" + "newLine" + "\"";
           } else
           {
@@ -196,6 +197,7 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
           }
 
           client.send(msg);
+          System.out.println(Thread.currentThread().getName());
           System.out.println(msg);
      }
 
