@@ -83,14 +83,14 @@ public class Client extends Thread
                          temp = (char) cin.read();
                          msg += temp;
                          ArrayList<String> check = RegexParser.matches("^\\{(.*)\\}$", msg);
-                         if(temp == '\n')
+                         if (temp == '\n')
                          {
-                      	   msg = "";
+                              msg = "";
                          }
                          if (!check.isEmpty())
                          {
-                        	 System.out.println(this.getName());
-                              System.out.println("Command: " + check.get(1));
+                              //System.out.println(this.getName());
+                              //System.out.println("Command: " + check.get(1));
                               e.addUpdate(check.get(1));
                               msg = "";
                          }
@@ -124,7 +124,7 @@ public class Client extends Thread
                               byte[] encoded = com.poll().getBytes(Charset.forName("UTF-8"));
                               //System.out.println(new String(encoded, Charset.forName("UTF-8")));
                               cpw.println(new String(encoded, Charset.forName("UTF-8")));
-                              
+
                          }
                     }
                } catch (IOException e)
