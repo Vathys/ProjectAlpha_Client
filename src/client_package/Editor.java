@@ -1,5 +1,6 @@
 package client_package;
 
+import java.awt.Dimension;
 import java.awt.event.InputEvent;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
@@ -9,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
@@ -46,6 +48,7 @@ public class Editor extends Thread
           windowClosing = false;
           //Frame
           frame = new JFrame("Editor");
+          frame.setPreferredSize(new Dimension(500, 500));
 
           // Text component 
           textArea = new JTextArea();
@@ -57,9 +60,14 @@ public class Editor extends Thread
           
           setupMenuBar();
           
-          frame.add(textArea);
+          JScrollPane sp = new JScrollPane(textArea);
+          
+          sp.setPreferredSize(new Dimension(500, 500));
+          
+          frame.add(sp);
           frame.setSize(500, 500);
           frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+          frame.pack();
           frame.setVisible(true);
      }
 
