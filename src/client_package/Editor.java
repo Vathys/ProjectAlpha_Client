@@ -1,9 +1,12 @@
 package client_package;
 
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -67,34 +70,35 @@ public class Editor extends Thread
           // Create a menubar 
           JMenuBar mb = new JMenuBar();
 
-          // Create amenu for menu 
+          // Create a menu for menu 
           JMenu m1 = new JMenu("File");
 
           // Create menu items 
           JMenuItem mi1 = new JMenuItem("New");
           JMenuItem mi2 = new JMenuItem("Open");
           JMenuItem mi3 = new JMenuItem("Save");
+          JMenuItem mi12 = new JMenuItem("Save As");
           JMenuItem mi9 = new JMenuItem("Print");
-          JMenuItem mi10 = new JMenuItem("+", KeyEvent.VK_PLUS);
-          JMenuItem mi11 = new JMenuItem("-");
-          KeyStroke ctrlPlusKeyStroke = KeyStroke.getKeyStroke("control +");
-          mi10.setAccelerator(ctrlPlusKeyStroke);
+          JMenuItem mc = new JMenuItem("Close");
+
+
 
           // Add action listener 
           mi1.addActionListener(lis);
           mi2.addActionListener(lis);
           mi3.addActionListener(lis);
           mi9.addActionListener(lis);
-          mi10.addActionListener(lis);
-          mi11.addActionListener(lis);
-          textArea.addKeyListener(lis);
-          frame.addKeyListener(lis);
+          mi12.addActionListener(lis);
+          mc.addActionListener(lis);
+          
           m1.add(mi1);
           m1.add(mi2);
-          m1.add(mi3);
+          m1.add(mi3); 
+          m1.add(mi12);
           m1.add(mi9);
-          m1.add(mi10);
-          m1.add(mi11);
+          m1.add(mc);
+       
+        
 
           // Create amenu for menu 
           JMenu m2 = new JMenu("Edit");
@@ -113,13 +117,33 @@ public class Editor extends Thread
           m2.add(mi5);
           m2.add(mi6);
 
-          JMenuItem mc = new JMenuItem("Close");
+         
 
-          mc.addActionListener(lis);
-
+          JMenu mv = new JMenu("View");
+          
+          mv.addActionListener(lis);
+          
+          JMenuItem mi10 = new JMenuItem("Zoom in", KeyEvent.VK_PLUS);
+          JMenuItem mi11 = new JMenuItem("Zoom out", KeyEvent.VK_MINUS);
+          
+          KeyStroke ctrlPlusKeyStroke = KeyStroke.getKeyStroke("control +");
+          mi10.setAccelerator(ctrlPlusKeyStroke);
+          KeyStroke ctrlMinusKeyStroke = KeyStroke.getKeyStroke("control -");
+          mi11.setAccelerator(ctrlMinusKeyStroke);
+         
+          mi10.addActionListener(lis);
+          mi11.addActionListener(lis);
+          
+          textArea.addKeyListener(lis);
+          frame.addKeyListener(lis);
+         
+          mv.add(mi10);
+          mv.add(mi11);
+          
           mb.add(m1);
-          mb.add(m2);
-          mb.add(mc);
+          mb.add(m2);  
+          mb.add(mv);
+         
 
           frame.setJMenuBar(mb);
           frame.add(textArea);
@@ -199,6 +223,7 @@ public class Editor extends Thread
                }
           } catch (BadLocationException e)
           {
+     
                e.printStackTrace();
           }
 
