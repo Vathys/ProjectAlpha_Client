@@ -105,6 +105,7 @@ public class Client extends Thread
                     System.out.println("Waiting for ThreadWriter to close...");
                }
                clientSocket.close();
+               System.out.println("Socket closed");
           } catch (IOException e)
           {
                e.printStackTrace();
