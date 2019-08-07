@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,7 +20,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.text.BadLocationException;
 
-public class CustomListener implements ActionListener, DocumentListener, KeyListener
+public class CustomListener implements ActionListener, DocumentListener, KeyListener, WindowListener
 {
      private Client client;
      private Editor parent;
@@ -141,19 +143,7 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
           } else if (s.equals("Close"))
           {
                parent.getFrame().setVisible(false);
-          } else if (s.equals("+"))
-          {
-               Font font = parent.getTextArea().getFont();
-               float size = font.getSize() + 1.0f;
-               parent.getTextArea().setFont(font.deriveFont(size));
-               System.out.println("+");
-          } else if (s.equals("-"))
-          {
-               Font font = parent.getTextArea().getFont();
-               float size = font.getSize() - 1.0f;
-               parent.getTextArea().setFont(font.deriveFont(size));
-          }
-
+          } 
      }
 
      @Override
@@ -209,8 +199,6 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
           System.out.println(msg);
      }
 
-     boolean control_pressed = false;
-
      @Override
      public void keyPressed(KeyEvent e)
      {
@@ -232,12 +220,7 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
      @Override
      public void keyReleased(KeyEvent e)
      {
-          // TODO Auto-generated method stub
-          if (e.getKeyCode() == KeyEvent.VK_CONTROL)
-          {
-               //    control_pressed = false;
-          }
-
+          
      }
 
      @Override
@@ -245,5 +228,54 @@ public class CustomListener implements ActionListener, DocumentListener, KeyList
      {
           // TODO Auto-generated method stub
 
+     }
+
+     
+     @Override
+     public void windowOpened(WindowEvent e)
+     {
+          // TODO Auto-generated method stub
+          
+     }
+
+     @Override
+     public void windowClosing(WindowEvent e)
+     {
+          Editor.closeWindow();
+     }
+
+     @Override
+     public void windowClosed(WindowEvent e)
+     {
+          // TODO Auto-generated method stub
+          
+     }
+
+     @Override
+     public void windowIconified(WindowEvent e)
+     {
+          // TODO Auto-generated method stub
+          
+     }
+
+     @Override
+     public void windowDeiconified(WindowEvent e)
+     {
+          // TODO Auto-generated method stub
+          
+     }
+
+     @Override
+     public void windowActivated(WindowEvent e)
+     {
+          // TODO Auto-generated method stub
+          
+     }
+
+     @Override
+     public void windowDeactivated(WindowEvent e)
+     {
+          // TODO Auto-generated method stub
+          
      }
 }

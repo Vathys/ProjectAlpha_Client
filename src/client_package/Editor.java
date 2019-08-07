@@ -1,15 +1,15 @@
 package client_package;
 
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 import javax.swing.text.BadLocationException;
 
 public class Editor extends Thread
@@ -20,6 +20,8 @@ public class Editor extends Thread
      private CustomListener lis;
 
      private BlockingQueue<String> updateCom;
+     
+     private static boolean windowClosing;
 
      // Constructor 
      public Editor(Client c)
@@ -39,6 +41,7 @@ public class Editor extends Thread
 
           lis = new CustomListener(c, this);
           updateCom = new LinkedBlockingQueue<String>();
+          windowClosing = false;
           //Frame
           frame = new JFrame("Editor");
 
@@ -46,19 +49,21 @@ public class Editor extends Thread
           textArea = new JTextArea();
           textArea.getDocument().addDocumentListener(lis);
 
-          /*
-          JButton incButton = new JButton("+");
-          incButton.setSize(100, 100);
-          textArea.add(incButton);
-          incButton.setLocation(1000, 1000);
-          incButton.addActionListener(lis);
-          JButton decButton = new JButton("-");
-          decButton.setSize(100, 100);
-          textArea.add(decButton);
-          decButton.addActionListener(lis);
-          */
+          textArea.addKeyListener(lis);
+          frame.addKeyListener(lis);
+          frame.addWindowListener(lis);
+          
+          setupMenuBar();
+          
+          frame.add(textArea);
+          frame.setSize(500, 500);
+          frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+          frame.setVisible(true);
+     }
 
-          //REDO MENU BAR
+     private void setupMenuBar()
+     {
+        //REDO MENU BAR
           //Especially New, Open, Save
           //Function of New, Open, Save will depend on where
           //Document will be saved...
@@ -75,26 +80,17 @@ public class Editor extends Thread
           JMenuItem mi2 = new JMenuItem("Open");
           JMenuItem mi3 = new JMenuItem("Save");
           JMenuItem mi9 = new JMenuItem("Print");
-          JMenuItem mi10 = new JMenuItem("+", KeyEvent.VK_PLUS);
-          JMenuItem mi11 = new JMenuItem("-");
-          KeyStroke ctrlPlusKeyStroke = KeyStroke.getKeyStroke("control +");
-          mi10.setAccelerator(ctrlPlusKeyStroke);
 
           // Add action listener 
           mi1.addActionListener(lis);
           mi2.addActionListener(lis);
           mi3.addActionListener(lis);
           mi9.addActionListener(lis);
-          mi10.addActionListener(lis);
-          mi11.addActionListener(lis);
-          textArea.addKeyListener(lis);
-          frame.addKeyListener(lis);
+          
           m1.add(mi1);
           m1.add(mi2);
           m1.add(mi3);
           m1.add(mi9);
-          m1.add(mi10);
-          m1.add(mi11);
 
           // Create amenu for menu 
           JMenu m2 = new JMenu("Edit");
@@ -122,25 +118,22 @@ public class Editor extends Thread
           mb.add(mc);
 
           frame.setJMenuBar(mb);
-          frame.add(textArea);
-          frame.setSize(500, 500);
-          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-          frame.setVisible(true);
      }
-
+     
      @Override
      public void run()
      {
-          while (true)
+          while (!Editor.getWindowClosing())
           {
-               try
+               String update = updateCom.poll();
+               if(update != null)
                {
-                    updateDoc(updateCom.take());
-               } catch (InterruptedException e)
-               {
-                    e.printStackTrace();
+                    updateDoc(update);
                }
           }
+          System.out.println(windowClosing);
+          System.out.println("Editor closed");
+          frame.dispose();
      }
 
      public void updateDoc(String com)
@@ -240,5 +233,15 @@ public class Editor extends Thread
      public void setTextArea(JTextArea textArea)
      {
           this.textArea = textArea;
+     }
+
+     public static boolean getWindowClosing()
+     {
+          return windowClosing;
+     }
+     
+     public static void closeWindow()
+     {
+          windowClosing = true;
      }
 }

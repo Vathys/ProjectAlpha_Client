@@ -36,6 +36,8 @@ public class Client extends Thread
      private ConcurrentLinkedQueue<String> com;
      private ThreadWriter writer;
 
+     private boolean writerClose;
+
      public Client(String serverName, int port)
      {
           this.serverName = serverName;
@@ -43,6 +45,7 @@ public class Client extends Thread
 
           com = new ConcurrentLinkedQueue<String>();
           writer = new ThreadWriter();
+          writerClose = false;
 
           System.out.println("Connecting to " + this.serverName + " on port " + this.port);
           try
@@ -75,11 +78,11 @@ public class Client extends Thread
      {
           try (BufferedReader cin = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));)
           {
-               while (true)
+               while (!Editor.getWindowClosing())
                {
                     char temp;
                     String msg = "";
-                    while (cin.ready())
+                    while (cin.ready() && !Editor.getWindowClosing())
                     {
                          temp = (char) cin.read();
                          msg += temp;
@@ -96,8 +99,12 @@ public class Client extends Thread
                               msg = "";
                          }
                     }
-
                }
+               while(!writerClose)
+               {
+                    System.out.println("Waiting for ThreadWriter to close...");
+               }
+               clientSocket.close();
           } catch (IOException e)
           {
                e.printStackTrace();
@@ -118,7 +125,7 @@ public class Client extends Thread
 
                try (PrintWriter cpw = new PrintWriter(clientSocket.getOutputStream(), true);)
                {
-                    while (true)
+                    while (!Editor.getWindowClosing())
                     {
                          if (!com.isEmpty())
                          {
@@ -128,6 +135,9 @@ public class Client extends Thread
 
                          }
                     }
+                    byte[] encoded = "{exit}".getBytes(Charset.forName("UTF-8"));
+                    cpw.println(new String(encoded, Charset.forName("UTF-8")));
+                    writerClose = true;
                } catch (IOException e)
                {
                     e.printStackTrace();
