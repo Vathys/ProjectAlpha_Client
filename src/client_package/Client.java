@@ -42,6 +42,7 @@ public class Client extends Thread
           this.port = port;
 
           com = new ConcurrentLinkedQueue<String>();
+          writer = new ThreadWriter();
 
           System.out.println("Connecting to " + this.serverName + " on port " + this.port);
           try
