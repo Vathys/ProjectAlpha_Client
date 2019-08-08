@@ -93,10 +93,17 @@ public class Client extends Thread
                          }
                          if (!check.isEmpty())
                          {
-                              // System.out.println(this.getName());
-                              // System.out.println("Command: " + check.get(1));
-                              e.addUpdate(check.get(1));
-                              msg = "";
+                              if(check.get(1).equals("exit"))
+                              {
+                                   Editor.closeWindow();
+                              }
+                              else
+                              {
+                                   // System.out.println(this.getName());
+                                   // System.out.println("Command: " + check.get(1));
+                                   e.addUpdate(check.get(1));
+                                   msg = "";
+                              }
                          }
                     }
                }
