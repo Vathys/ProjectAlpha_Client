@@ -1,27 +1,45 @@
-1. Make a client
-1.1 Set up sockets
-1.1 Test connections with server
-2. Start Handling connections in Client
-3. Develop Cuncurrent systems 
-4. Develop a Protocol for server/client communication
-5. GUI
-  a. Use Document Listener to listen to documents and send changes to client; changes will then go to server
- 
- Processes in Client:
-  1. Send the server commands (create a protocol). 
-    a. When the client receives changes from editor, client should said those changes to the server (as "change in document" command)
-    b. Open file command
-    c. Protocol must tell server what changes are happening, where those changes are occuring, and in which file those changes atre occurring. 
-    
-    Ideas for protocol
-      {(+)"\n\n//This is a comment"(line, 7)(fileName, Main.java)}
-      (+) OR (-) -> addition OR deletion to the file
-      "" -> what message is being added or deleted
-      (line, ...) -> where the edit has started
-      (fileName, ...) -> which file the edit is occuring
-      (character, ...) -> this the character after which the edit occurs
-    
- 
- Processes in Editor:
-  1. Send changes in the document to the client every 15 seconds (Seconds may vary)
-  2. 
+# To-Do List
+- [x] Make a client
+  * [x] Set up sockets
+  * [x] Test connections with server
+- [x] Start Handling connections in Client
+- [x] Develop Cuncurrent systems 
+- [x] Develop a Protocol for server/client communication
+- [x] GUI
+  * [x] Use Document Listener to listen to documents and send changes to client; changes will then go to server
+- [ ] Add feature to allow openeing multiple documents in different windows
+- [ ] Save and Open Documents
+  * [ ] Add project feature in server
+  * [ ] Allow clients to open files only in project folder
+  * Allow clients to sync on different documents
+  * Server machine is where the documents are saved
+  * When server is opened, user will have to pick a folder that contains a .project file, which will contain information on location of bin and src, and location of libraries.
+  * Only folders that contain a .project file can be opened
+- [ ] Add compile and/or run options in Clients
+  * [ ] Open console in all client machine when run
+  * Would it be easier to signal all machine's to run OR send run results of one machine to all others?
+
+# Current Protocol
+{EventType Offset Length StringValue}
+
+The whole message (0)
+
+EventType -> [+ (EventType.INSERT) OR - (EventType.REMOVE)] (1)
+
+Offset -> [off, #] (2)
+
+Length -> [len, #] (3)
+
+StringValue -> "val" (4)
+## Example:
+{[+][off12][len1]"d"}
+
+EventType -> [+] -> EventType.INSERT
+
+Offset -> [off12] -> offset = 12
+
+Length -> [len1] -> length = 1
+
+val -> "d"
+
+(In case of a newLine, val = "newLine" but length = 1)
