@@ -10,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -47,10 +48,10 @@ public class CustomListener implements ActionListener, DocumentListener, WindowL
           } else if (s.equals("Save"))
           {
                // Create an object of JFileChooser class 
-               JFileChooser j = new JFileChooser("f:");
+               JFileChooser j = new JFileChooser(".\\test");
 
                // Invoke the showsSaveDialog function to show the save dialog 
-               int r = j.showSaveDialog(null);
+               int r = j.showSaveDialog(parent.getFrame());
 
                if (r == JFileChooser.APPROVE_OPTION)
                {
@@ -66,8 +67,11 @@ public class CustomListener implements ActionListener, DocumentListener, WindowL
                          // Create buffered writer to write 
                          BufferedWriter w = new BufferedWriter(wr);
 
+                         String text = parent.getTextArea().getText();
+                         text = text.replaceAll("(?!\\r)\\n", "\r\n");
+                         
                          // Write 
-                         w.write(parent.getTextArea().getText());
+                         w.write(text);
 
                          w.flush();
                          w.close();
@@ -92,7 +96,7 @@ public class CustomListener implements ActionListener, DocumentListener, WindowL
           } else if (s.equals("Open"))
           {
                // Create an object of JFileChooser class 
-               JFileChooser j = new JFileChooser("f:");
+               JFileChooser j = new JFileChooser(".\\text");
 
                // Invoke the showsOpenDialog function to show the save dialog 
                int r = j.showOpenDialog(null);
@@ -106,7 +110,7 @@ public class CustomListener implements ActionListener, DocumentListener, WindowL
                     try
                     {
                          // String 
-                         String s1 = "", sl = "";
+                         String temp = "", main = "";
 
                          // File reader 
                          FileReader fr = new FileReader(fi);
@@ -115,16 +119,16 @@ public class CustomListener implements ActionListener, DocumentListener, WindowL
                          BufferedReader br = new BufferedReader(fr);
 
                          // Initilize sl 
-                         sl = br.readLine();
+                         main = br.readLine();
 
                          // Take the input from the file 
-                         while ((s1 = br.readLine()) != null)
+                         while ((temp = br.readLine()) != null)
                          {
-                              sl = sl + "\n" + s1;
+                              main = main + "\n" + temp;
                          }
 
                          // Set the text 
-                         parent.getTextArea().setText(sl);
+                         parent.getTextArea().setText(main);
 
                          br.close();
                     } catch (Exception evt)
