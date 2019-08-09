@@ -43,3 +43,12 @@ Length -> [len1] -> length = 1
 val -> "d"
 
 (In case of a newLine, val = "newLine" but length = 1)
+
+# Websites to Checkout
+
+Info on SMB: https://en.wikipedia.org/wiki/Server_Message_Block
+Solution for Multiple Carets: https://stackoverflow.com/questions/33611407/how-to-show-multiple-carets-in-a-jtextarea-or-jtextpane
+
+### Different SMB Libraries:
+JLan Download by Alfresco: https://sourceforge.net/projects/alfresco/files/JLAN/
+Github for SMBJ: https://github.com/hierynomus/smbj
