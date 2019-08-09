@@ -1,4 +1,4 @@
-package client_package;
+package com.alpha.client;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

@@ -1,4 +1,4 @@
-package client_package;
+package com.alpha.client;
 
 import java.awt.Dimension;
 import java.awt.event.InputEvent;
